@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+}
+.container {
+    text-align: center;
+    color: white;
+}
+h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+p {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+.buttons {
+    position: relative;
+    width: 300px;
+    height: 100px;
+    margin: auto;
+}
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+#yesBtn {
+    background: white;
+    color: #ff4d6d;
+    position: absolute;
+    left: 20px;
+}
+#noBtn {
+    background: #ff4d6d;
+    color: white;
+    position: absolute;
+    right: 20px;
+}
+#message {
+    margin-top: 40px;
+    font-size: 32px;
+    display: none;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Happy Birthday ❤️</h1>
+    <p>accept aakuooo shuttu? </p>
+    <div class="buttons">
+        <button id="yesBtn">YES ❤️</button>
+        <button id="noBtn">NO 😜</button>
+    </div>
+    <div id="message">
+        nanni indd ❤️ kalynm kayka taa
+    </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", () => {
+    // Moves the button randomly within the window dimensions
+    const x = Math.floor(Math.random() * (window.innerWidth - 150));
+    const y = Math.floor(Math.random() * (window.innerHeight - 80));
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+document.getElementById("yesBtn").addEventListener("click", () => {
+    document.getElementById("message").style.display = "block";
+});
+</script>
+
+</body>
+</html>
