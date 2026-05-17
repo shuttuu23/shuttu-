@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday ❤️</title>
+<title> pedikkanda thornnokk shuttu ❤️ </title>
 <style>
 body {
     margin: 0;
@@ -21,7 +21,7 @@ body {
     color: white;
 }
 h1 {
-    font-size: 60px;
+    font-size: 50px;
     margin-bottom: 20px;
 }
 p {
@@ -40,7 +40,7 @@ button {
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    transition: 0.1s;
+    touch-action: none; /* Prevents default phone zooming/scrolling on double tap */
 }
 #yesBtn {
     background: white;
@@ -53,6 +53,7 @@ button {
     color: white;
     position: absolute;
     right: 20px;
+    transition: 0.1s ease;
 }
 #message {
     margin-top: 40px;
@@ -65,28 +66,48 @@ button {
 
 <div class="container">
     <h1>Happy Birthday ❤️</h1>
-    <p>accept aakuooo shuttu? </p>
+    <p>ithil nink stickerum emojim  itt oyvakan patulaa...accept aakuo nte prposal? please ❤️😌  </p>
     <div class="buttons">
         <button id="yesBtn">YES ❤️</button>
-        <button id="noBtn">NO 😜</button>
+        <button id="noBtn">NO </button>
     </div>
     <div id="message">
-        nanni indd ❤️ kalynm kayka taa
+        nanni indd...❤️
     </div>
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
-    // Moves the button randomly within the window dimensions
-    const x = Math.floor(Math.random() * (window.innerWidth - 150));
-    const y = Math.floor(Math.random() * (window.innerHeight - 80));
+
+function moveButton() {
+    // Math to keep the button fully visible inside any mobile/desktop screen
+    const x = Math.floor(Math.random() * (window.innerWidth - 120));
+    const y = Math.floor(Math.random() * (window.innerHeight - 60));
+    
     noBtn.style.position = "fixed";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
+}
+
+// Works for Desktop Mouse hover
+noBtn.addEventListener("mouseover", moveButton);
+
+// Works perfectly for Phone screen touches!
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Stops the actual click from happening on mobile
+    moveButton();
 });
+
+// Ultimate backup: Just in case they somehow click it
+noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Nice try, but you can't say no! 😜");
+    moveButton();
+});
+
 document.getElementById("yesBtn").addEventListener("click", () => {
     document.getElementById("message").style.display = "block";
+    noBtn.style.display = "none"; // Hide the NO button once YES is clicked
 });
 </script>
 
