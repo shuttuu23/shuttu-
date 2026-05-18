@@ -66,8 +66,8 @@ button {
     color: white;
     position: absolute;
     right: 10px;
-    /* CHANGED: Reduced from 0.15s to 0.05s for near-instant teleportation */
-    transition: left 0.05s ease-out, top 0.05s ease-out;
+    /* Transition removed completely for instant frame-one teleportation */
+    transition: none !important;
 }
 #message {
     margin-top: 40px;
