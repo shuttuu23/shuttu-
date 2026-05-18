@@ -66,7 +66,8 @@ button {
     color: white;
     position: absolute;
     right: 10px;
-    transition: left 0.15s ease-out, top 0.15s ease-out;
+    /* CHANGED: Reduced from 0.15s to 0.05s for near-instant teleportation */
+    transition: left 0.05s ease-out, top 0.05s ease-out;
 }
 #message {
     margin-top: 40px;
@@ -74,34 +75,6 @@ button {
     display: none;
     line-height: 1.4;
     animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Corner Footer Styling */
-.corner-footer {
-    position: fixed;
-    bottom: 15px;
-    right: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 6px 12px;
-    border-radius: 30px;
-    backdrop-filter: blur(5px);
-    z-index: 10;
-}
-.corner-footer img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid white;
-}
-.corner-footer span {
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 @keyframes fadeIn {
@@ -125,11 +98,6 @@ button {
     <div id="message">
         nanni indd...santhoshaayi..❤️..neritt parnjoo tta begm😉
     </div>
-</div>
-
-<div class="corner-footer">
-    <img src="https://i.ibb.co/G4xTVfVj/IMG-9934.png" alt="Profile Photo">
-    <span>Ee nishkalankamaaya mugham kandit egna nink reject aakan thoninne?</span>
 </div>
 
 <script>
@@ -158,8 +126,8 @@ function moveButton() {
     const btnWidth = noBtn.offsetWidth || 180;
     const btnHeight = noBtn.offsetHeight || 50;
     
-    const maxX = window.innerWidth - btnWidth - 40;
-    const maxY = window.innerHeight - btnHeight - 80; 
+    const maxX = window.innerWidth - btnWidth - 30;
+    const maxY = window.innerHeight - btnHeight - 30;
 
     const x = Math.floor(Math.random() * (maxX - 30) + 30);
     const y = Math.floor(Math.random() * (maxY - 30) + 30);
