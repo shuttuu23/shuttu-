@@ -21,7 +21,7 @@ body {
     color: white;
     padding: 20px;
     max-width: 90%;
-    z-index: 2; /* Ensures text stays above the floating button if they overlap */
+    z-index: 2; 
 }
 h1 {
     font-size: 45px;
@@ -32,7 +32,7 @@ p {
     font-size: 22px;
     margin-bottom: 40px;
     line-height: 1.4;
-    min-height: 80px; /* Keeps layout stable when text changes lines */
+    min-height: 80px; 
 }
 .buttons {
     position: relative;
@@ -59,14 +59,14 @@ button {
     left: 10px;
 }
 #yesBtn:active {
-    transform: scale(0.95); /* Slight click effect */
+    transform: scale(0.95); 
 }
 #noBtn {
     background: #ff4d6d;
     color: white;
     position: absolute;
     right: 10px;
-    transition: left 0.1s ease-out, top 0.1s ease-out; /* Smooth evasion jump */
+    transition: left 0.15s ease-out, top 0.15s ease-out;
 }
 #message {
     margin-top: 40px;
@@ -75,6 +75,35 @@ button {
     line-height: 1.4;
     animation: fadeIn 0.5s ease-in-out;
 }
+
+/* Corner Footer Styling */
+.corner-footer {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+.corner-footer img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+.corner-footer span {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -98,6 +127,12 @@ button {
     </div>
 </div>
 
+<!-- Bottom Right Corner Photo and Text -->
+<div class="corner-footer">
+    <img src="PASTE_YOUR_UPLOADED_IMAGE_URL_HERE" alt="Profile Photo">
+    <span>Your Name ❤️</span>
+</div>
+
 <script>
 const noBtn = document.getElementById("noBtn");
 const mainQuestion = document.getElementById("mainQuestion");
@@ -107,7 +142,6 @@ let prankCount = 0;
 function moveButton() {
     prankCount++;
 
-    // Dialogue flow updated with your new line
     if (prankCount === 1) {
         mainQuestion.innerHTML = "ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?<br><span style='font-size: 20px; font-weight: bold; color: #ffe3e8;'>nerit parnjaathy ishtaavumbo 🥲❤️</span>";
     } else if (prankCount === 2) {
@@ -122,31 +156,26 @@ function moveButton() {
         mainQuestion.innerHTML = "reject aaki madthille...eni onn accept aakikude";
     }
 
-    // Dynamic screen safety boundaries
-    const btnWidth = noBtn.offsetWidth || 220;
+    const btnWidth = noBtn.offsetWidth || 180;
     const btnHeight = noBtn.offsetHeight || 50;
     
-    const maxX = window.innerWidth - btnWidth - 20;
-    const maxY = window.innerHeight - btnHeight - 20;
+    // Safety padding layout limits
+    const maxX = window.innerWidth - btnWidth - 40;
+    const maxY = window.innerHeight - btnHeight - 80; 
 
-    const x = Math.floor(Math.random() * maxX);
-    const y = Math.floor(Math.random() * maxY);
+    const x = Math.floor(Math.random() * (maxX - 30) + 30);
+    const y = Math.floor(Math.random() * (maxY - 30) + 30);
     
     noBtn.style.position = "fixed";
-    noBtn.style.left = Math.max(20, x) + "px";
-    noBtn.style.top = Math.max(20, y) + "px";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
 
-// Mouse hover interaction for desktop
 noBtn.addEventListener("mouseover", moveButton);
-
-// Touch interaction for mobile devices
 noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault(); // Prevents simulated mouse clicks or zooming
+    e.preventDefault(); 
     moveButton();
 });
-
-// Click fallback
 noBtn.addEventListener("click", (e) => {
     e.preventDefault();
     moveButton();
