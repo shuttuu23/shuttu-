@@ -20,16 +20,19 @@ body {
     text-align: center;
     color: white;
     padding: 20px;
+    max-width: 90%;
+    z-index: 2; /* Ensures text stays above the floating button if they overlap */
 }
 h1 {
     font-size: 45px;
     margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 p {
     font-size: 22px;
     margin-bottom: 40px;
     line-height: 1.4;
-    min-height: 60px; /* Prevents layout shifting when text changes */
+    min-height: 80px; /* Keeps layout stable when text changes lines */
 }
 .buttons {
     position: relative;
@@ -44,8 +47,10 @@ button {
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    touch-action: none; /* Prevents default phone zooming/scrolling on double tap */
-    white-space: nowrap; /* Keeps the text on a single line */
+    touch-action: none; 
+    white-space: nowrap; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease;
 }
 #yesBtn {
     background: white;
@@ -53,18 +58,26 @@ button {
     position: absolute;
     left: 10px;
 }
+#yesBtn:active {
+    transform: scale(0.95); /* Slight click effect */
+}
 #noBtn {
     background: #ff4d6d;
     color: white;
     position: absolute;
     right: 10px;
-    transition: 0.1s ease;
+    transition: left 0.1s ease-out, top 0.1s ease-out; /* Smooth evasion jump */
 }
 #message {
     margin-top: 40px;
     font-size: 28px;
     display: none;
     line-height: 1.4;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -89,44 +102,51 @@ button {
 const noBtn = document.getElementById("noBtn");
 const mainQuestion = document.getElementById("mainQuestion");
 
-// Keeps track of how many times she tried to hit the NO button
 let prankCount = 0;
 
 function moveButton() {
     prankCount++;
 
-    // Dynamic dialogue changes based on how many times she targets the NO button
+    // Dialogue flow updated with your new line
     if (prankCount === 1) {
-        mainQuestion.innerHTML = "ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?<br><br><span style='font-size: 24px; font-weight: bold;'>nerit parnjaathy ishtaavumbo 🥲❤️</span>";
+        mainQuestion.innerHTML = "ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?<br><span style='font-size: 20px; font-weight: bold; color: #ffe3e8;'>nerit parnjaathy ishtaavumbo 🥲❤️</span>";
     } else if (prankCount === 2) {
         mainQuestion.innerHTML = "please reject aakkanda shuttu...";
     } else if (prankCount === 3) {
         mainQuestion.innerHTML = "leftil njekk....";
     } else if (prankCount === 4) {
+        mainQuestion.innerHTML = "korch soft aakuo heart 🥲😌?";
+    } else if (prankCount === 5) {
         mainQuestion.innerHTML = "agna parayallaa...pavalle njan";
-    } else if (prankCount >= 5) {
+    } else if (prankCount >= 6) {
         mainQuestion.innerHTML = "reject aaki madthille...eni onn accept aakikude";
     }
 
-    // Math to keep the longer text button safely on-screen
-    const x = Math.floor(Math.random() * (window.innerWidth - 260));
-    const y = Math.floor(Math.random() * (window.innerHeight - 60));
+    // Dynamic screen safety boundaries
+    const btnWidth = noBtn.offsetWidth || 220;
+    const btnHeight = noBtn.offsetHeight || 50;
+    
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
+
+    const x = Math.floor(Math.random() * maxX);
+    const y = Math.floor(Math.random() * maxY);
     
     noBtn.style.position = "fixed";
-    noBtn.style.left = Math.max(10, x) + "px";
-    noBtn.style.top = Math.max(10, y) + "px";
+    noBtn.style.left = Math.max(20, x) + "px";
+    noBtn.style.top = Math.max(20, y) + "px";
 }
 
-// Works for Desktop Mouse hover
+// Mouse hover interaction for desktop
 noBtn.addEventListener("mouseover", moveButton);
 
-// Works perfectly for Phone screen touches!
+// Touch interaction for mobile devices
 noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault(); // Stops the actual click from happening on mobile
+    e.preventDefault(); // Prevents simulated mouse clicks or zooming
     moveButton();
 });
 
-// Ultimate backup: Just in case they somehow click it
+// Click fallback
 noBtn.addEventListener("click", (e) => {
     e.preventDefault();
     moveButton();
@@ -134,9 +154,9 @@ noBtn.addEventListener("click", (e) => {
 
 document.getElementById("yesBtn").addEventListener("click", () => {
     document.getElementById("message").style.display = "block";
-    noBtn.style.display = "none"; // Hide the NO button once YES is clicked
-    document.querySelector('.buttons').style.display = "none"; // Hide button container
-    mainQuestion.style.display = "none"; // Hide the original question text
+    noBtn.style.display = "none"; 
+    document.querySelector('.buttons').style.display = "none"; 
+    mainQuestion.style.display = "none"; 
 });
 </script>
 
