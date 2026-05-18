@@ -19,46 +19,52 @@ body {
 .container {
     text-align: center;
     color: white;
+    padding: 20px;
 }
 h1 {
-    font-size: 50px;
+    font-size: 45px;
     margin-bottom: 20px;
 }
 p {
-    font-size: 24px;
+    font-size: 22px;
     margin-bottom: 40px;
+    line-height: 1.4;
+    min-height: 60px; /* Prevents layout shifting when text changes */
 }
 .buttons {
     position: relative;
-    width: 300px;
-    height: 100px;
+    width: 100%;
+    max-width: 400px;
+    height: 120px;
     margin: auto;
 }
 button {
-    padding: 15px 30px;
-    font-size: 20px;
+    padding: 15px 25px;
+    font-size: 18px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     touch-action: none; /* Prevents default phone zooming/scrolling on double tap */
+    white-space: nowrap; /* Keeps the text on a single line */
 }
 #yesBtn {
     background: white;
     color: #ff4d6d;
     position: absolute;
-    left: 20px;
+    left: 10px;
 }
 #noBtn {
     background: #ff4d6d;
     color: white;
     position: absolute;
-    right: 20px;
+    right: 10px;
     transition: 0.1s ease;
 }
 #message {
     margin-top: 40px;
-    font-size: 32px;
+    font-size: 28px;
     display: none;
+    line-height: 1.4;
 }
 </style>
 </head>
@@ -66,11 +72,14 @@ button {
 
 <div class="container">
     <h1>Happy Birthday ❤️</h1>
-    <p>ithil nink stickerum emojim  itt oyvakan patulaa...korch ishtm ille annod 😌? nerit parnjaathy ishtaavumbo 🥲❤️  </p>
+    
+    <p id="mainQuestion">ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?</p>
+    
     <div class="buttons">
         <button id="yesBtn">ishtaan ❤️</button>
         <button id="noBtn">ishtavan chance koravaan🚶</button>
     </div>
+    
     <div id="message">
         nanni indd...santhoshaayi..❤️..neritt parnjoo tta begm😉
     </div>
@@ -78,15 +87,30 @@ button {
 
 <script>
 const noBtn = document.getElementById("noBtn");
+const mainQuestion = document.getElementById("mainQuestion");
+
+// Keeps track of how many times she tried to hit the NO button
+let prankCount = 0;
 
 function moveButton() {
-    // Math to keep the button fully visible inside any mobile/desktop screen
-    const x = Math.floor(Math.random() * (window.innerWidth - 120));
+    prankCount++;
+
+    // Dynamic dialogue changes based on how many times she targets the NO button
+    if (prankCount === 1) {
+        mainQuestion.innerHTML = "ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?<br><br><span style='font-size: 24px; font-weight: bold;'>nerit parnjaathy ishtaavumbo 🥲❤️</span>";
+    } else if (prankCount === 2) {
+        mainQuestion.innerHTML = "please reject aakkanda shuttu...";
+    } else if (prankCount >= 3) {
+        mainQuestion.innerHTML = "ishtaverkku lee?.... reject aakkandaa ippee";
+    }
+
+    // Math to keep the longer text button safely on-screen
+    const x = Math.floor(Math.random() * (window.innerWidth - 260));
     const y = Math.floor(Math.random() * (window.innerHeight - 60));
     
     noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    noBtn.style.left = Math.max(10, x) + "px";
+    noBtn.style.top = Math.max(10, y) + "px";
 }
 
 // Works for Desktop Mouse hover
@@ -101,13 +125,14 @@ noBtn.addEventListener("touchstart", (e) => {
 // Ultimate backup: Just in case they somehow click it
 noBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    alert("Nice try, but you can't say no! 😜");
     moveButton();
 });
 
 document.getElementById("yesBtn").addEventListener("click", () => {
     document.getElementById("message").style.display = "block";
     noBtn.style.display = "none"; // Hide the NO button once YES is clicked
+    document.querySelector('.buttons').style.display = "none"; // Hide button container
+    mainQuestion.style.display = "none"; // Hide the original question text
 });
 </script>
 
