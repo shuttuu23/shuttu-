@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> pedikkanda phonin onnu aavulaa thornnokk </title>
+<title> pedikkanda phonin onnu aavulaa thornnokkyok </title>
 <style>
 body {
     margin: 0;
@@ -76,7 +76,7 @@ button {
     <p id="mainQuestion">ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?</p>
     
     <div class="buttons">
-        <button id="yesBtn">ishtaan ❤️</button>
+        <button id="yesBtn">ishtaan/ishtaavu❤️</button>
         <button id="noBtn">ishtavan chance koravaan🚶</button>
     </div>
     
@@ -100,8 +100,12 @@ function moveButton() {
         mainQuestion.innerHTML = "ithil nink stickerum emojim itt oyvakan patulaa...korch ishtm ille annod 😌?<br><br><span style='font-size: 24px; font-weight: bold;'>nerit parnjaathy ishtaavumbo 🥲❤️</span>";
     } else if (prankCount === 2) {
         mainQuestion.innerHTML = "please reject aakkanda shuttu...";
-    } else if (prankCount >= 3) {
-        mainQuestion.innerHTML = "ishtaverkku lee?.... reject aakkandaa ippee";
+    } else if (prankCount === 3) {
+        mainQuestion.innerHTML = "leftil njekk....";
+    } else if (prankCount === 4) {
+        mainQuestion.innerHTML = "agna parayallaa...pavalle njan";
+    } else if (prankCount >= 5) {
+        mainQuestion.innerHTML = "reject aaki madthille...eni onn accept aakikude";
     }
 
     // Math to keep the longer text button safely on-screen
