@@ -51,6 +51,7 @@ button {
     white-space: nowrap; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     transition: transform 0.2s ease;
+    min-width: 140px; /* Ensures consistent button length */
 }
 #yesBtn {
     background: white;
@@ -66,7 +67,6 @@ button {
     color: white;
     position: absolute;
     right: 10px;
-    /* Transition removed completely for instant frame-one teleportation */
     transition: none !important;
 }
 #message {
@@ -105,8 +105,12 @@ const noBtn = document.getElementById("noBtn");
 const mainQuestion = document.getElementById("mainQuestion");
 
 let prankCount = 0;
+let isMoving = false;
 
-function moveButton() {
+function moveButton(e) {
+    if (isMoving) return;
+    isMoving = true;
+
     prankCount++;
 
     if (prankCount === 1) {
@@ -123,25 +127,36 @@ function moveButton() {
         mainQuestion.innerHTML = "reject aaki madthille...eni onn accept aakikude";
     }
 
-    const btnWidth = noBtn.offsetWidth || 180;
+    const btnWidth = noBtn.offsetWidth || 140;
     const btnHeight = noBtn.offsetHeight || 50;
     
-    const maxX = window.innerWidth - btnWidth - 30;
+    // Limits X to stay within screen boundaries safely
+    const maxX = window.innerWidth - btnWidth - 20;
+    const x = Math.floor(Math.random() * (maxX - 20) + 20);
+    
+    // Forces the button to stay ONLY in the bottom half of the screen (prevents overlapping text)
+    const minY = window.innerHeight / 2;
     const maxY = window.innerHeight - btnHeight - 30;
-
-    const x = Math.floor(Math.random() * (maxX - 30) + 30);
-    const y = Math.floor(Math.random() * (maxY - 30) + 30);
+    const y = Math.floor(Math.random() * (maxY - minY) + minY);
     
     noBtn.style.position = "fixed";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
+
+    // Reset lock instantly after movement
+    setTimeout(() => { isMoving = false; }, 50);
 }
 
+// Triggers instantly on desktop hover
 noBtn.addEventListener("mouseover", moveButton);
+
+// Triggers instantly on mobile touch start and prevents actual clicking
 noBtn.addEventListener("touchstart", (e) => {
     e.preventDefault(); 
     moveButton();
 });
+
+// Backup safety net for clicks
 noBtn.addEventListener("click", (e) => {
     e.preventDefault();
     moveButton();
