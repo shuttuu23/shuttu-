@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title> pedikkanda phonin onnu aavulaa thornnokkyok </title>
 <style>
 body {
@@ -24,7 +24,7 @@ body {
     z-index: 2; 
 }
 h1 {
-    font-size: 45px;
+    font-size: 42px;
     margin-bottom: 20px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
@@ -42,7 +42,7 @@ p {
     margin: auto;
 }
 button {
-    padding: 15px 25px;
+    padding: 12px 20px;
     font-size: 18px;
     border: none;
     border-radius: 50px;
@@ -51,13 +51,13 @@ button {
     white-space: nowrap; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     transition: transform 0.2s ease;
-    min-width: 140px; /* Ensures consistent button length */
 }
 #yesBtn {
     background: white;
     color: #ff4d6d;
     position: absolute;
     left: 10px;
+    min-width: 140px;
 }
 #yesBtn:active {
     transform: scale(0.95); 
@@ -67,6 +67,10 @@ button {
     color: white;
     position: absolute;
     right: 10px;
+    /* Reduced size properties */
+    max-width: 110px;
+    font-size: 15px;
+    padding: 10px 15px;
     transition: none !important;
 }
 #message {
@@ -92,7 +96,7 @@ button {
     
     <div class="buttons">
         <button id="yesBtn">ishtaan❤️</button>
-        <button id="noBtn"> ishtallaaa..💔</button>
+        <button id="noBtn">ishtallaaa..💔</button>
     </div>
     
     <div id="message">
@@ -105,11 +109,13 @@ const noBtn = document.getElementById("noBtn");
 const mainQuestion = document.getElementById("mainQuestion");
 
 let prankCount = 0;
-let isMoving = false;
 
 function moveButton(e) {
-    if (isMoving) return;
-    isMoving = true;
+    // Stop the phone from triggering a "click" after a touch
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
 
     prankCount++;
 
@@ -127,39 +133,35 @@ function moveButton(e) {
         mainQuestion.innerHTML = "reject aaki madthille...eni onn accept aakikude";
     }
 
-    const btnWidth = noBtn.offsetWidth || 140;
-    const btnHeight = noBtn.offsetHeight || 50;
+    const btnWidth = noBtn.offsetWidth || 100;
+    const btnHeight = noBtn.offsetHeight || 40;
     
-    // Limits X to stay within screen boundaries safely
+    // Calculate safe X boundaries
     const maxX = window.innerWidth - btnWidth - 20;
     const x = Math.floor(Math.random() * (maxX - 20) + 20);
     
-    // Forces the button to stay ONLY in the bottom half of the screen (prevents overlapping text)
-    const minY = window.innerHeight / 2;
-    const maxY = window.innerHeight - btnHeight - 30;
+    // Restricts the button strictly to the bottom 40% of the screen so it never covers the text
+    const minY = window.innerHeight * 0.6;
+    const maxY = window.innerHeight - btnHeight - 25;
     const y = Math.floor(Math.random() * (maxY - minY) + minY);
     
     noBtn.style.position = "fixed";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
-
-    // Reset lock instantly after movement
-    setTimeout(() => { isMoving = false; }, 50);
 }
 
-// Triggers instantly on desktop hover
+// Intercepts touch instantly on mobile screens before a click registers
+noBtn.addEventListener("touchstart", moveButton, { passive: false });
+noBtn.addEventListener("pointerdown", moveButton, { passive: false });
+
+// Desktop hover
 noBtn.addEventListener("mouseover", moveButton);
 
-// Triggers instantly on mobile touch start and prevents actual clicking
-noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault(); 
-    moveButton();
-});
-
-// Backup safety net for clicks
+// Final block line to completely disable standard clicking
 noBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    moveButton();
+    e.stopPropagation();
+    moveButton(e);
 });
 
 document.getElementById("yesBtn").addEventListener("click", () => {
